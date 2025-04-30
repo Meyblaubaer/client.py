@@ -136,8 +136,8 @@ jobs:
           override: true
           components: llvm-tools
           cache-key: ${{ matrix.python-version }}
-      - name: Install cargo-llvm-cov
-        run: cargo install cargo-llvm-cov
+      # - name: Install cargo-llvm-cov
+      #   run: cargo install cargo-llvm-cov
       - name: Download requirements-dev.txt
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
         with:
@@ -151,14 +151,14 @@ jobs:
         id: tests
         run: |
           source .venv/bin/activate
-          source <(cargo llvm-cov show-env --export-prefix)
-          export CARGO_TARGET_DIR=$CARGO_LLVM_COV_TARGET_DIR
-          export CARGO_INCREMENTAL=1
-          cargo llvm-cov clean --workspace
-          cargo test
+          # source <(cargo llvm-cov show-env --export-prefix)
+          # export CARGO_TARGET_DIR=$CARGO_LLVM_COV_TARGET_DIR
+          # export CARGO_INCREMENTAL=1
+          # cargo llvm-cov clean --workspace
+          # cargo test
           maturin develop --uv
           pytest tests --cov=deebot_client --cov-report xml --junitxml=junit.xml -o junit_family=legacy -v
-          cargo llvm-cov --no-run --lcov --output-path coverage.lcov
+          # cargo llvm-cov --no-run --lcov --output-path coverage.lcov
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@ad3126e916f78f00edff4ed0317cf185271ccc2d # v5.4.2
         with:
